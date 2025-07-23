@@ -244,38 +244,42 @@ Use when you have multiple related measurements:
   ]
 }
 ```
-
-**Output:**
-```prometheus
 ## Error Handling
 
-- **No numeric fields found**: Activity returns error with list of available fields
-- **Invalid JSON input**: Gracefully handled with descriptive error messages  
-- **Missing settings**: Use sensible defaults (gauge metrics, standard naming)
-- **Invalid array format**: Individual invalid metrics are skipped, valid ones processed
+- **No Numeric Fields Found**: The activity returns an error with a list of available fields in the input JSON.
+- **Invalid JSON Input**: Gracefully handled with descriptive error messages to help identify the issue.
+- **Missing Settings**: Sensible defaults are applied, such as using `gauge` as the metric type and standard naming conventions.
+- **Invalid Array Format**: Individual invalid metrics are skipped, while valid ones are processed without interruption.
 
 ## Output Format
 
-The activity generates standard Prometheus exposition format:
+The activity generates metrics in the standard Prometheus exposition format:
 ```
 # HELP <metric_name> <help_text>
-# TYPE <metric_name> <metric_type>  
+# TYPE <metric_name> <metric_type>
 <metric_name>{<labels>} <value> [<timestamp>]
+```
+
+### Example Output
+```prometheus
+# HELP system_metrics Generated metric from JSON data
+# TYPE system_metrics gauge
+system_metrics{name="cpu_usage",environment="prod",service="web-server"} 75.2
+system_metrics{name="memory_usage",environment="prod",service="web-server"} 68.5
 ```
 
 ## Integration with Prometheus
 
-The output can be used with:
-- **Prometheus Pushgateway**: Push metrics directly
-- **HTTP endpoint**: Serve metrics for scraping
-- **File export**: Write to files for collection
-- **Remote write**: Send to Prometheus-compatible systems
+The generated output can be integrated with Prometheus in the following ways:
+- **Prometheus Pushgateway**: Push metrics directly to a Pushgateway instance.
+- **HTTP Endpoint**: Serve metrics via an HTTP endpoint for Prometheus scraping.
+- **File Export**: Write metrics to a file for Prometheus to collect using `file_sd_config`.
+- **Remote Write**: Send metrics to Prometheus-compatible systems using remote write protocols.
 
 ## Dependencies
 
-- TIBCO Flogo Core v1.2.0+
-- Go 1.19+
-```
+- **TIBCO Flogo Core**: Version 1.2.0 or higher.
+- **Go**: Version 1.19 or higher.
 
 ### Example 4: With Timestamps
 
