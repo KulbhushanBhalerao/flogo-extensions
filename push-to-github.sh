@@ -90,17 +90,20 @@ fi
 # Ask user which repository structure they prefer
 echo ""
 echo "🤔 Choose repository structure:"
-echo "1) Add to existing activity repository as prometheus-metrics branch"
-echo "2) Create dedicated prometheus-metrics repository"
+echo "1) Push to flogo-extensions repository as prometheus-metrics branch"
+echo "2) Push to flogo-extensions repository as main branch"
 echo "3) Just prepare git (don't push yet)"
 echo ""
 read -p "Enter choice (1/2/3): " choice
 
 case $choice in
     1)
-        echo "🌿 Setting up as branch in activity repository..."
-        if ! git remote get-url origin > /dev/null 2>&1; then
-            git remote add origin https://github.com/kulbhushanbhalerao/activity.git
+        echo "🌿 Setting up as branch in flogo-extensions repository..."
+        if ! git remote | grep -q "origin"; then
+            git remote add origin https://github.com/kulbhushanbhalerao/flogo-extensions.git
+        else
+            git remote set-url origin https://github.com/kulbhushanbhalerao/flogo-extensions.git
+        fi
         fi
         
         echo "🌿 Creating prometheus-metrics branch..."
@@ -109,12 +112,15 @@ case $choice in
         echo "🚀 Pushing to GitHub..."
         git push -u origin prometheus-metrics
         
-        echo "✅ Successfully pushed to: https://github.com/kulbhushanbhalerao/activity/tree/prometheus-metrics"
+        echo "✅ Successfully pushed to: https://github.com/kulbhushanbhalerao/flogo-extensions/tree/prometheus-metrics"
         ;;
     2)
-        echo "📦 Setting up dedicated repository..."
-        if ! git remote get-url origin > /dev/null 2>&1; then
-            git remote add origin https://github.com/kulbhushanbhalerao/prometheus-metrics.git
+        echo "📦 Setting up as main branch in flogo-extensions repository..."
+        if ! git remote | grep -q "origin"; then
+            git remote add origin https://github.com/kulbhushanbhalerao/flogo-extensions.git
+        else
+            git remote set-url origin https://github.com/kulbhushanbhalerao/flogo-extensions.git
+        fi
         fi
         
         echo "🌿 Setting main branch..."
@@ -123,18 +129,18 @@ case $choice in
         echo "🚀 Pushing to GitHub..."
         git push -u origin main
         
-        echo "✅ Successfully pushed to: https://github.com/kulbhushanbhalerao/prometheus-metrics"
+        echo "✅ Successfully pushed to: https://github.com/kulbhushanbhalerao/flogo-extensions"
         ;;
     3)
         echo "📋 Git repository prepared. Manual push commands:"
         echo ""
-        echo "For activity repository (as branch):"
-        echo "  git remote add origin https://github.com/kulbhushanbhalerao/activity.git"
+        echo "For flogo-extensions repository (as branch):"
+        echo "  git remote add origin https://github.com/kulbhushanbhalerao/flogo-extensions.git"
         echo "  git checkout -b prometheus-metrics"
         echo "  git push -u origin prometheus-metrics"
         echo ""
-        echo "For dedicated repository:"
-        echo "  git remote add origin https://github.com/kulbhushanbhalerao/prometheus-metrics.git"
+        echo "For flogo-extensions repository (as main):"
+        echo "  git remote add origin https://github.com/kulbhushanbhalerao/flogo-extensions.git"
         echo "  git branch -M main"
         echo "  git push -u origin main"
         ;;

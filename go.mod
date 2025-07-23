@@ -1,4 +1,4 @@
-module github.com/kulbhushanbhalerao/activity/prometheus-metrics
+module github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics
 
 go 1.19
 

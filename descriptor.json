@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "flogo:activity",
   "description": "Converts JSON messages into Prometheus metric format with configurable metric types, labels, and timestamps.",
-  "ref": "github.com/kulbhushanbhalerao/activity/prometheus-metrics",
+  "ref": "github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics",
   "settings": [
     {
       "name": "metricType",

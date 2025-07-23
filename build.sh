@@ -55,7 +55,7 @@ if [ $? -eq 0 ]; then
     echo ""
     echo "🔧 Integration Details:"
     echo "======================"
-    echo "  Module Path: github.com/kulbhushanbhalerao/activity/prometheus-metrics"
+    echo "  Module Path: github.com/kulbhushanbhalerao/flogo-activities/prometheus-metrics"
     echo "  Activity Reference: #prometheus-metrics"
     echo ""
     echo "📖 For detailed usage examples, see README.md"

@@ -11,11 +11,21 @@ A custom TIBCO Flogo activity that converts JSON messages into Prometheus metric
 - **Prometheus Compliant**: Properly formatted output ready for Prometheus ingestion
 - **Label Sanitization**: Automatic sanitization of label names and values
 
-## 📦 Installation
+### Installation
 
-1. Copy the `prometheus-metrics` directory to your Flogo extensions folder
-2. Import the activity in your Flogo application
-3. Register the activity reference: `github.com/kulbhushanbhalerao/activity/prometheus-metrics`
+1. Install the activity using the Flogo CLI:
+```bash
+flogo install github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics
+```
+
+2. Or add it to your `flogo.json` file:
+```json
+{
+  "imports": [
+    "github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics"
+  ]
+}
+```
 
 ## ⚙️ Configuration
 
@@ -424,7 +434,7 @@ DEBUG: Final result from processMetricObject: '...'
 ```json
 {
   "activity": {
-    "ref": "github.com/kulbhushanbhalerao/activity/prometheus-metrics",
+    "ref": "github.com/kulbhushanbhalerao/flogo-activities/prometheus-metrics",
     "settings": {
       "metricType": "gauge",
       "metricName": "my_metric",
@@ -467,7 +477,7 @@ DEBUG: Final result from processMetricObject: '...'
 
 ### Module Information
 ```
-Module Path: github.com/kulbhushanbhalerao/activity/prometheus-metrics
+Module Path: github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics
 Activity ID: prometheus-metrics
 Reference:   #prometheus-metrics
 ```
