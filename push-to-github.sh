@@ -91,7 +91,7 @@ fi
 echo ""
 echo "🤔 Choose repository structure:"
 echo "1) Push to flogo-extensions repository as prometheus-metrics branch"
-echo "2) Push to flogo-extensions repository as main branch"
+echo "2) Push to flogo-extensions repository as master branch"
 echo "3) Just prepare git (don't push yet)"
 echo ""
 read -p "Enter choice (1/2/3): " choice
@@ -103,7 +103,6 @@ case $choice in
             git remote add origin https://github.com/kulbhushanbhalerao/flogo-extensions.git
         else
             git remote set-url origin https://github.com/kulbhushanbhalerao/flogo-extensions.git
-        fi
         fi
         
         echo "🌿 Creating prometheus-metrics branch..."
@@ -121,13 +120,12 @@ case $choice in
         else
             git remote set-url origin https://github.com/kulbhushanbhalerao/flogo-extensions.git
         fi
-        fi
         
-        echo "🌿 Setting main branch..."
-        git branch -M main
+        echo "🌿 Setting master branch..."
+        git branch -M master
         
         echo "🚀 Pushing to GitHub..."
-        git push -u origin main
+        git push -u origin master
         
         echo "✅ Successfully pushed to: https://github.com/kulbhushanbhalerao/flogo-extensions"
         ;;
@@ -141,8 +139,8 @@ case $choice in
         echo ""
         echo "For flogo-extensions repository (as main):"
         echo "  git remote add origin https://github.com/kulbhushanbhalerao/flogo-extensions.git"
-        echo "  git branch -M main"
-        echo "  git push -u origin main"
+        echo "  git branch -M master"
+        echo "  git push -u origin master"
         ;;
     *)
         echo "❌ Invalid choice. Repository prepared but not pushed."
