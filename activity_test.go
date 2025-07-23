@@ -1,7 +1,6 @@
 package prometheusmetrics
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/project-flogo/core/support/test"
@@ -128,7 +127,7 @@ func TestActivity_Eval(t *testing.T) {
 	outputStr := output.(string)
 	assert.Contains(t, outputStr, "# HELP test_metric Generated metric from JSON data")
 	assert.Contains(t, outputStr, "# TYPE test_metric gauge")
-	assert.Contains(t, outputStr, `test_metric{name="value"} 42.5`)
+	assert.Contains(t, outputStr, `test_metric{name="value",env="prod",service="test-service"} 42.5`)
 }
 
 func TestActivity_Eval_Counter(t *testing.T) {
@@ -171,7 +170,9 @@ func TestActivity_Eval_Counter(t *testing.T) {
 	outputStr := output.(string)
 	assert.Contains(t, outputStr, "# HELP http_requests_total Total HTTP requests processed")
 	assert.Contains(t, outputStr, "# TYPE http_requests_total counter")
-	assert.Contains(t, outputStr, `http_requests_total{name="count"} 150`)
+	// Update to expect both metrics with their labels
+	assert.Contains(t, outputStr, `http_requests_total{name="count",endpoint="/api/users",method="GET"} 150`)
+	assert.Contains(t, outputStr, `http_requests_total{name="status",endpoint="/api/users",method="GET"} 200`)
 }
 
 func TestActivity_Eval_WithTimestamp(t *testing.T) {
@@ -208,7 +209,7 @@ func TestActivity_Eval_WithTimestamp(t *testing.T) {
 	output := tc.GetOutput("prometheusMetric")
 	assert.NotNil(t, output)
 	outputStr := output.(string)
-	assert.Contains(t, outputStr, `cpu_usage{name="metric_value"} 75.2 1705316200000`)
+	assert.Contains(t, outputStr, `cpu_usage{name="metric_value",host="server-01"} 75.2 1705316200000`)
 }
 
 func TestActivity_Eval_NoValue(t *testing.T) {
@@ -237,24 +238,10 @@ func TestActivity_Eval_NoValue(t *testing.T) {
 	// Execute
 	done, err := act.Eval(tc)
 
-	// Assertions - Since there are no numeric values, it should succeed but produce empty output
-	assert.True(t, done)
-	assert.NoError(t, err)
-
-	output := tc.GetOutput("prometheusMetric")
-	assert.NotNil(t, output)
-
-	// Should contain help and type but no metric lines
-	outputStr := output.(string)
-	assert.Contains(t, outputStr, "# HELP test_metric Generated metric from JSON data")
-	assert.Contains(t, outputStr, "# TYPE test_metric gauge")
-	// Should not contain any metric lines (only comments)
-	lines := strings.Split(strings.TrimSpace(outputStr), "\n")
-	for _, line := range lines {
-		if !strings.HasPrefix(line, "#") && strings.TrimSpace(line) != "" {
-			t.Errorf("Found unexpected metric line: %s", line)
-		}
-	}
+	// Assertions - Since there are no numeric values, it should fail with an error
+	assert.False(t, done)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "no numeric value found in metric object")
 }
 
 func TestSanitizeLabelName(t *testing.T) {

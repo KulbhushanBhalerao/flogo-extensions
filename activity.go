@@ -276,8 +276,8 @@ func (a *Activity) processMetricObject(metricObj map[string]interface{}) (string
 		// Build metric line
 		metricLine := a.metricName
 
-		// Add metric_name label to distinguish different metrics
-		allLabels := fmt.Sprintf(`metric_name="%s"`, a.sanitizeLabelValue(key))
+		// Add name label to distinguish different metrics (use "name" instead of "metric_name")
+		allLabels := fmt.Sprintf(`name="%s"`, a.sanitizeLabelValue(key))
 		if len(labels) > 0 {
 			allLabels += "," + labels
 		}
@@ -340,16 +340,21 @@ func (a *Activity) extractLabelsFromObject(metricObj map[string]interface{}) str
 
 		// Only include non-numeric string values as labels
 		if strVal, err := coerce.ToString(val); err == nil {
-			// Skip if it's a numeric type (int, float, etc.)
-			if _, isFloat := val.(float64); !isFloat {
-				if _, isInt := val.(int); !isInt {
-					if _, isInt64 := val.(int64); !isInt64 {
-						if _, isFloat32 := val.(float32); !isFloat32 {
-							// It's a string value, include as label
-							labelPairs = append(labelPairs, fmt.Sprintf("%s=\"%s\"", a.sanitizeLabelName(key), a.sanitizeLabelValue(strVal)))
-						}
-					}
-				}
+			// Check if this value can be parsed as a number
+			isNumeric := false
+			if _, err := strconv.ParseFloat(strVal, 64); err == nil {
+				isNumeric = true
+			} else if _, err := strconv.ParseInt(strVal, 10, 64); err == nil {
+				isNumeric = true
+			} else if _, err := coerce.ToFloat64(val); err == nil {
+				isNumeric = true
+			} else if _, err := coerce.ToInt64(val); err == nil {
+				isNumeric = true
+			}
+
+			// Only add as label if it's not numeric
+			if !isNumeric {
+				labelPairs = append(labelPairs, fmt.Sprintf("%s=\"%s\"", a.sanitizeLabelName(key), a.sanitizeLabelValue(strVal)))
 			}
 		}
 	}
@@ -479,15 +484,9 @@ func (a *Activity) extractLabels(data map[string]interface{}) string {
 // isReservedField checks if a field is reserved and should not be used as a label
 func (a *Activity) isReservedField(key string) bool {
 	reservedFields := map[string]bool{
-		"value":        true,
-		"val":          true,
-		"metric_value": true,
-		"count":        true,
-		"gauge":        true,
-		"counter":      true,
-		"help":         true,
-		"timestamp":    true,
-		"type":         true,
+		"help":      true,
+		"timestamp": true,
+		"type":      true,
 	}
 	return reservedFields[strings.ToLower(key)]
 }
