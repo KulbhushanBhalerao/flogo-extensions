@@ -947,4 +947,4 @@ metric_name{name="field2",label1="value1"} 456
 
 ## �📄 License
 
-This activity follows the same license as your TIBCO Flogo installation.
+Keep only this repo as a source for any enhancements or create a PR for this repo. 
