@@ -1,0 +1,81 @@
+{
+  "name": "tibco-prometheus-metrics",
+  "title": "Prometheus Metrics Converter",
+  "version": "1.0.0",
+  "type": "flogo:activity",
+  "description": "Converts JSON messages into Prometheus metric format with configurable metric types, labels, and timestamps.",
+  "ref": "github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics",
+  "settings": [
+    {
+      "name": "metricType",
+      "type": "string",
+      "required": true,
+      "value": "gauge",
+      "display": {
+        "name": "Metric Type",
+        "description": "The type of Prometheus metric to generate."
+      },
+      "allowed": ["gauge", "counter", "histogram", "summary"]
+    },
+    {
+      "name": "metricName",
+      "type": "string",
+      "required": true,
+      "value": "flogo_metric",
+      "display": {
+        "name": "Metric Name",
+        "description": "The name of the Prometheus metric. Must follow Prometheus naming conventions."
+      }
+    },
+    {
+      "name": "includeHelp",
+      "type": "boolean",
+      "value": true,
+      "display": {
+        "name": "Include HELP Comment",
+        "description": "If true, includes a HELP comment line in the Prometheus output."
+      }
+    },
+    {
+      "name": "includeType",
+      "type": "boolean",
+      "value": true,
+      "display": {
+        "name": "Include TYPE Comment",
+        "description": "If true, includes a TYPE comment line in the Prometheus output."
+      }
+    },
+    {
+      "name": "timestamp",
+      "type": "boolean",
+      "value": false,
+      "display": {
+        "name": "Include Timestamp",
+        "description": "If true, includes a timestamp in the metric output. Uses current time or timestamp from input data."
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "name": "metricData",
+      "type": "object",
+      "display": {
+        "name": "Metric Data",
+        "description": "JSON object containing metric data. Can be a single metric object or an object with 'metrics' array containing multiple metric objects. Each metric object should have numeric fields (converted to metrics) and string fields (converted to labels).",
+        "type": "texteditor",
+        "syntax": "json",
+        "mappable": true
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "prometheusMetric",
+      "type": "string",
+      "display": {
+        "name": "Prometheus Metric",
+        "description": "The formatted Prometheus metric string in multi-line format for readable logging."
+      }
+    }
+  ]
+}
