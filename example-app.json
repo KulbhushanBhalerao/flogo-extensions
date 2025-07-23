@@ -1,0 +1,80 @@
+{
+  "name": "PrometheusMetricsExample",
+  "type": "flogo:app",
+  "version": "1.0.0",
+  "description": "Example Flogo application demonstrating Prometheus metrics conversion",
+  "appModel": "1.2.0",
+  "imports": [
+    "github.com/project-flogo/contrib/trigger/rest",
+    "github.com/project-flogo/contrib/activity/log",
+    "github.com/kulbhushanbhalerao/activity/prometheus-metrics"
+  ],
+  "triggers": [
+    {
+      "id": "receive_json",
+      "ref": "github.com/project-flogo/contrib/trigger/rest",
+      "name": "Receive JSON Data",
+      "description": "REST trigger to receive JSON data for conversion",
+      "settings": {
+        "port": 8080
+      },
+      "handlers": [
+        {
+          "flow": {
+            "ref": "res://flow:convert_to_prometheus"
+          },
+          "settings": {
+            "method": "POST",
+            "path": "/metrics"
+          }
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "flow:convert_to_prometheus",
+      "data": {
+        "name": "ConvertToPrometheus",
+        "description": "Convert JSON to Prometheus metrics",
+        "tasks": [
+          {
+            "id": "convert_metrics",
+            "name": "ConvertToPrometheusMetrics",
+            "description": "Convert JSON data to Prometheus format",
+            "activity": {
+              "ref": "github.com/kulbhushanbhalerao/activity/prometheus-metrics",
+              "settings": {
+                "metricType": "gauge",
+                "metricName": "application_metric",
+                "includeHelp": true,
+                "includeType": true,
+                "timestamp": false
+              },
+              "input": {
+                "metricData": "=$flow.body"
+              }
+            }
+          },
+          {
+            "id": "log_result",
+            "name": "LogResult",
+            "description": "Log the converted Prometheus metric",
+            "activity": {
+              "ref": "github.com/project-flogo/contrib/activity/log",
+              "input": {
+                "message": "=concat('Generated Prometheus metric: ', $activity[convert_metrics].prometheusMetric)"
+              }
+            }
+          }
+        ],
+        "links": [
+          {
+            "from": "convert_metrics",
+            "to": "log_result"
+          }
+        ]
+      }
+    }
+  ]
+}
