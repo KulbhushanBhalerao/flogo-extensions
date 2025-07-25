@@ -88,7 +88,7 @@ flogo install github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics
 ```
 
 ## Screenshots
-## Using Flogo to Expose `/metrics` Endpoint for Prometheus
+## Using Flogo to Expose `/metrics` Endpoint for Prometheus e.g. your own Business/Functional metrics easily
 
 Flogo can be used to expose a `/metrics` endpoint that Prometheus can scrape. The Flogo flow can fetch, calculate, or build metrics dynamically and return them in a Prometheus-compatible format.
 
