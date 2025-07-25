@@ -87,6 +87,14 @@ flogo install github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics
 }
 ```
 
+## Screenshots
+
+![Prometheus Metrics Activity](./images/flow-with-metrics-generated.png)
+![Prometheus Metrics Activity Settings](./images/ActivitySettings.png)
+![Prometheus Metrics Activity Input Settings](./images/ActivityInputSetting.png)
+![Prometheus Metrics Activity Input mappings](./images/MapDataToMetrics.png)
+![Prometheus Metrics Activity Output variable to Map](./images/OutputPrometheusMetrics.png)
+
 ## ⚙️ Configuration
 
 ### Settings
