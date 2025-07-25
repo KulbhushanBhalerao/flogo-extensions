@@ -88,11 +88,31 @@ flogo install github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics
 ```
 
 ## Screenshots
+## Using Flogo to Expose `/metrics` Endpoint for Prometheus
 
+Flogo can be used to expose a `/metrics` endpoint that Prometheus can scrape. The Flogo flow can fetch, calculate, or build metrics dynamically and return them in a Prometheus-compatible format.
+
+### Flow Overview
 ![Prometheus Metrics Activity](./images/flow-with-metrics-generated.png)
+
+### General Metrics Settings
+Configure the Prometheus Metrics Activity with the required settings to define how metrics are generated and exposed.
+
 ![Prometheus Metrics Activity Settings](./images/ActivitySettings.png)
+
+### Input JSON Example
+Provide a sample JSON message in the input mapper. Numeric fields are converted into unique metrics, while string fields become labels for all metrics derived from the numeric fields. This simplifies the process of building Prometheus metrics.
+
 ![Prometheus Metrics Activity Input Settings](./images/ActivityInputSetting.png)
+
+### Dynamic Input Mapping
+Using the sample JSON message, create a dynamic input mapper. This allows you to map metric values directly or calculate them dynamically using data from other activities or APIs that Flogo can call within the process.
+
 ![Prometheus Metrics Activity Input mappings](./images/MapDataToMetrics.png)
+
+### Output Parameter Mapping
+Use the output parameter containing the final metrics to return the generated Prometheus metrics. These metrics can then be scraped by Prometheus or used by a Prometheus ServiceMonitor.
+
 ![Prometheus Metrics Activity Output variable to Map](./images/OutputPrometheusMetrics.png)
 
 ## ⚙️ Configuration
