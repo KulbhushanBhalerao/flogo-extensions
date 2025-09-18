@@ -1,0 +1,29 @@
+{
+  "name": "prime-numbers",
+  "type": "flogo:activity",
+  "version": "1.0.0",
+  "title": "Prime Numbers Generator",
+  "description": "Generates prime numbers within a given range",
+  "settings": [],
+  "inputs": [
+    {
+      "name": "start",
+      "type": "integer", 
+      "required": true,
+      "description": "The starting number of the range"
+    },
+    {
+      "name": "end",
+      "type": "integer",
+      "required": true,
+      "description": "The ending number of the range"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "primes",
+      "type": "array",
+      "description": "The list of generated prime numbers in the range"
+    }
+  ]
+}
