@@ -13,7 +13,9 @@ import (
 func TestJinja2PromptActivity(t *testing.T) {
 	// Test basic template rendering using template variables
 	initCtx := &MockInitContext{
-		settings: map[string]interface{}{},
+		settings: map[string]interface{}{
+			"template": "Hello {{ name }}! You are {{ age }} years old.",
+		},
 	}
 
 	act, err := New(initCtx)
@@ -23,7 +25,6 @@ func TestJinja2PromptActivity(t *testing.T) {
 
 	evalCtx := &MockActivityContext{
 		inputs: map[string]interface{}{
-			"template": "Hello {{ name }}! You are {{ age }} years old.",
 			"templateVariables": map[string]interface{}{
 				"name": "Alice",
 				"age":  30,

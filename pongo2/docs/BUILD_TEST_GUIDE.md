@@ -11,13 +11,13 @@
 ### 1. Clone/Navigate to the Activity Directory
 ```bash
 ```bash
-cd /path/to/pongo2-prompt
+cd /path/to/pongo2
 ```
 ```
 
 ### 2. Initialize Go Modules (if not already done)
 ```bash
-go mod init pongo2-prompt
+go mod init pongo2
 ```
 
 ### 3. Install Dependencies
@@ -36,7 +36,7 @@ go build .
 ### 5. Build as Flogo Plugin (Optional)
 For use as a plugin in Flogo applications:
 ```bash
-go build -buildmode=plugin -o pongo2-prompt.so .
+go build -buildmode=plugin -o pongo2.so .
 ```
 
 ## Testing the Activity
@@ -243,10 +243,10 @@ go test -v utils.go activity_test.go
 ### Package for Distribution
 ```bash
 # Create distribution package (includes all source files)
-tar -czf pongo2-prompt-v1.0.0.tar.gz *.go descriptor.json go.mod go.sum *.md utils/
+tar -czf pongo2-v1.0.0.tar.gz *.go descriptor.json go.mod go.sum *.md utils/
 
 # Create zip for Windows
-zip -r pongo2-prompt-v1.0.0.zip *.go descriptor.json go.mod go.sum *.md utils/
+zip -r pongo2-v1.0.0.zip *.go descriptor.json go.mod go.sum *.md utils/
 ```
 
 ### Publish as Go Module (Optional)

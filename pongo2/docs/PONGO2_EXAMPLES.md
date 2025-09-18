@@ -12,6 +12,7 @@ This document provides practical examples of pongo2 templates with sample variab
 6. [Data Analysis Templates](#data-analysis-templates)
 7. [Complex Nested Structures](#complex-nested-structures)
 8. [Business Document Templates](#business-document-templates)
+9. [Travel Itinerary Generator](#travel-itinerary-generator)
 
 ---
 
@@ -22,10 +23,47 @@ This document provides practical examples of pongo2 templates with sample variab
 **Template:**
 ```pongo2
 Hello {{ name }}! Welcome to {{ company }}.
-Your role is {{ role }} and you have {{ experience }} years of experience.
+Your role is {{ role }} 
+{% if experience == 0 %} and welcome to your first professional role!
+{% elif experience > 0 %} and well done on your {{ experience }} years of experience!{% endif %}
+{% if experience == 10 or experience == 15 or experience == 20 %} We truly appreciate your significant contribution to the industry.{% endif %}
+```
+** JSON Schema **
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "company": {
+            "type": "string"
+        },
+        "role": {
+            "type": "string"
+        },
+        "experience": {
+            "type": "number"
+        }
+    }
+}
+**Sample Variables (New Employee):**
+```json
+{
+  "name": "John Smith",
+  "company": "TechCorp Solutions",
+  "role": "Junior Developer",
+  "experience": 0
+}
 ```
 
-**Sample Variables:**
+**Expected Output (New Employee):**
+```
+Hello John Smith! Welcome to TechCorp Solutions.
+Your role is Junior Developer and welcome to your first professional role!
+```
+
+**Sample Variables (Experienced Employee):**
 ```json
 {
   "name": "Alice Johnson",
@@ -35,10 +73,26 @@ Your role is {{ role }} and you have {{ experience }} years of experience.
 }
 ```
 
-**Expected Output:**
+**Expected Output (Experienced Employee):**
 ```
 Hello Alice Johnson! Welcome to TechCorp Solutions.
-Your role is Senior Developer and you have 8 years of experience.
+Your role is Senior Developer and well done on your 8 years of experience!
+```
+
+**Sample Variables (Milestone Experience):**
+```json
+{
+  "name": "Robert Chen",
+  "company": "TechCorp Solutions",
+  "role": "Principal Architect",
+  "experience": 15
+}
+```
+
+**Expected Output (Milestone Experience):**
+```
+Hello Robert Chen! Welcome to TechCorp Solutions.
+Your role is Principal Architect and well done on your 15 years of experience! We truly appreciate your significant contribution to the industry.
 ```
 
 ### Example 2: Product Information
@@ -796,7 +850,299 @@ No significant risks identified.
 {% endfor %}
 
 ---
+---
 *Next report due: {{ next_report_date }}*
+```
+
+---
+
+## Travel Itinerary Generator
+
+### Example 10: European Travel Itinerary
+
+You are a travel itinerary generator for European tourists.
+Your job is to create itineraries for tourists coming to Europe, based on user input.
+You will receive information from a user about their goals for their trip.
+You will generate an in-depth travel itinerary for users.
+Do not use the internet.
+Do not hallucinate.
+You must address all of what the user provides.
+You must have a catchy title.
+You must bullet point every sentence.
+Your output must be in a logical format and order.
+Address the user by name if it is given.
+Come up with at least 2 ideas the user may not have mentioned.
+Output 1-2 lines of a history of each place suggested.
+Provide 1-2 lines of current cultural background on the place provided.
+Provide 1-2 lines of weather related advice for each place suggested.
+Provide one line of rationale for each place suggested.
+Include one joke in the itinerary.
+End the itinerary with a clever, place-related goodbye.
+
+
+**Template:**
+```pongo2
+# 🌍 {{ itinerary_title }}
+
+{% if traveler_name %}Hello {{ traveler_name }}! {% endif %}
+You are a travel itinerary generator for European tourists.
+
+• Your job is to create itineraries for tourists coming to Europe, based on user input.
+• You will receive information from a user about their goals for their trip.
+• You will generate an in-depth travel itinerary for users.
+• Do not use the internet.
+• Do not hallucinate.
+• You must address all of what the user provides.
+• You must have a catchy title.
+• You must bullet point every sentence.
+• Your output must be in a logical format and order.
+• Address the user by name if it is given.
+• Come up with at least 2 ideas the user may not have mentioned.
+• Output 1-2 lines of a history of each place suggested.
+• Provide 1-2 lines of current cultural background on the place provided.
+• Provide 1-2 lines of weather related advice for each place suggested.
+• Provide one line of rationale for each place suggested.
+• Include one joke in the itinerary.
+• End the itinerary with a clever, place-related goodbye.
+
+## � Trip Overview
+
+• **Destination Focus:** {{ trip_focus }}
+• **Travel Duration:** {{ duration }}
+• **Travel Style:** {{ travel_style }}
+• **Budget Range:** {{ budget_range }}
+
+## 🗺️ First Destination:
+
+**📍 Why Visit:**
+
+
+**🏛️ Historical Background:**
+
+
+**🎭 Cultural Highlights:**
+
+
+**🌤️ Weather Advice:**
+
+
+**🎯 Must-Do Activities:**
+
+
+**🍽️ Local Cuisine:**
+
+
+## 🗺️ Second Destination: 
+
+**📍 Why Visit:**
+
+
+**🏛️ Historical Background:**
+
+
+**🎭 Cultural Highlights:**
+
+
+**�️ Weather Advice:**
+
+
+**🎯 Must-Do Activities:**
+
+
+**🍽️ Local Cuisine:**
+
+
+## 💡 Bonus Ideas You May Not Have Considered
+
+### bonus idea1 title 
+• bonus idea1 description
+• **Best Time:** 
+• **Why It's Special:** 
+
+### bonus_idea2_title 
+• bonus idea2 description
+• **Best Time:** 
+• **Why It's Special:** 
+
+## 🎭 Fun Fact Corner
+travel joke
+
+## 🎒 Essential Travel Tips
+
+• **Transportation:** 
+• **Currency:** 
+• **Language:** 
+• **Cultural Etiquette:** 
+
+---
+
+clever goodbye
+
+*Safe travels and create memories that will last a lifetime!* ✈️🌟
+```
+
+**Sample Variables:**
+```json
+{
+  "traveler_name": "Emma",
+  "itinerary_title": "Enchanting European Heritage Trail",
+  "trip_focus": "Medieval History & Art",
+  "duration": "12 days",
+  "travel_style": "Cultural immersion with historical focus",
+  "budget_range": "Mid to high-range",
+  
+}
+
+
+{ //extra not needed
+"destination1_city": "Prague",
+  "destination1_country": "Czech Republic",
+  "destination1_rationale": "Prague offers the best-preserved medieval old town in Europe with stunning Gothic and Baroque architecture",
+  "destination1_history": "Founded around 885 AD, Prague served as the seat of the Holy Roman Empire and survived both World Wars largely intact",
+  "destination1_culture": "Prague is renowned for its classical music tradition and hosts over 100 concerts daily alongside a thriving contemporary art scene",
+  "destination1_weather": "Pack layers for September - days are mild (15-20°C) but evenings can be cool, and bring a light raincoat",
+  "destination1_activity1": "Explore Prague Castle complex and St. Vitus Cathedral",
+  "destination1_activity2": "Walk across the iconic Charles Bridge at sunrise",
+  "destination1_activity3": "Tour the historic Jewish Quarter and synagogues",
+  "destination1_food1": "Traditional goulash with bread dumplings",
+  "destination1_food2": "Trdelník (chimney cake) from Old Town Square",
+  "destination2_city": "Florence",
+  "destination2_country": "Italy",
+  "destination2_rationale": "Florence is the birthplace of the Renaissance and houses the world's greatest collection of Renaissance art",
+  "destination2_history": "Florence was the center of medieval European trade and the powerful Medici family patronized artists like Michelangelo and Leonardo da Vinci",
+  "destination2_culture": "Modern Florence maintains its artisan traditions with leather crafting, goldsmithing, and preserves Renaissance urban planning as a living museum",
+  "destination2_weather": "September weather is perfect (18-25°C) but popular sites get crowded - book museum tickets in advance and visit early morning",
+  "destination2_activity1": "Pre-book Uffizi Gallery to see Botticelli's Birth of Venus",
+  "destination2_activity2": "Climb the Duomo dome for panoramic city views",
+  "destination2_activity3": "Explore Oltrarno district for authentic artisan workshops",
+  "destination2_food1": "Bistecca alla Fiorentina (Florentine steak)",
+  "destination2_food2": "Ribollita soup and pappardelle pasta",
+  "bonus_idea1_title": "Sunrise Hot Air Balloon Over Tuscany",
+  "bonus_idea1_description": "Experience the rolling hills of Tuscany from above with a peaceful hot air balloon ride",
+  "bonus_idea1_timing": "Early morning (6-8 AM) for optimal weather and lighting",
+  "bonus_idea1_special": "Unique perspective of medieval hilltop towns and vineyards that few tourists experience",
+  "bonus_idea2_title": "Underground Prague - Medieval Tunnels Tour",
+  "bonus_idea2_description": "Explore the hidden underground medieval tunnels and chambers beneath Prague's Old Town",
+  "bonus_idea2_timing": "Evening tours available year-round",
+  "bonus_idea2_special": "Discover the secret history of medieval Prague that most visitors never see",
+  "travel_joke": "Why don't tourists ever get lost in Prague? Because all roads lead to the castle... and when they don't, there's always a helpful local pointing in six different directions! 😄",
+  "transportation_tip": "Eurail Pass covers most routes between major cities - book seat reservations in advance for high-speed trains",
+  "currency_tip": "Czech Republic uses Czech Crown (CZK), Italy uses Euro (EUR) - many places accept cards but carry some cash for small vendors",
+  "language_tip": "Download Google Translate with offline mode - locals appreciate any attempt to speak their language, even basic phrases",
+  "etiquette_tip": "In Czech Republic, maintain eye contact when toasting; in Italy, dress modestly when visiting churches and religious sites",
+  "clever_goodbye": "May your journey be filled with as many discoveries as there are cobblestones in Prague's Old Town, and may each sunset in Florence paint memories as beautiful as a Renaissance masterpiece! Arrivederci and na shledanou! 🏰🎨"
+  }
+```
+
+**Expected Output:**
+```
+# 🌍 Enchanting European Heritage Trail
+
+Hello Emma! You are a travel itinerary generator for European tourists.
+
+• Your job is to create itineraries for tourists coming to Europe, based on user input.
+• You will receive information from a user about their goals for their trip.
+• You will generate an in-depth travel itinerary for users.
+• Do not use the internet.
+• Do not hallucinate.
+• You must address all of what the user provides.
+• You must have a catchy title.
+• You must bullet point every sentence.
+• Your output must be in a logical format and order.
+• Address the user by name if it is given.
+• Come up with at least 2 ideas the user may not have mentioned.
+• Output 1-2 lines of a history of each place suggested.
+• Provide 1-2 lines of current cultural background on the place provided.
+• Provide 1-2 lines of weather related advice for each place suggested.
+• Provide one line of rationale for each place suggested.
+• Include one joke in the itinerary.
+• End the itinerary with a clever, place-related goodbye.
+
+## 📋 Trip Overview
+
+• **Destination Focus:** Medieval History & Art
+• **Travel Duration:** 12 days
+• **Travel Style:** Cultural immersion with historical focus
+• **Budget Range:** Mid to high-range
+
+## 🗺️ First Destination: Prague, Czech Republic
+
+**📍 Why Visit:**
+• Prague offers the best-preserved medieval old town in Europe with stunning Gothic and Baroque architecture
+
+**🏛️ Historical Background:**
+• Founded around 885 AD, Prague served as the seat of the Holy Roman Empire and survived both World Wars largely intact
+
+**🎭 Cultural Highlights:**
+• Prague is renowned for its classical music tradition and hosts over 100 concerts daily alongside a thriving contemporary art scene
+
+**🌤️ Weather Advice:**
+• Pack layers for September - days are mild (15-20°C) but evenings can be cool, and bring a light raincoat
+
+**🎯 Must-Do Activities:**
+• Explore Prague Castle complex and St. Vitus Cathedral
+• Walk across the iconic Charles Bridge at sunrise
+• Tour the historic Jewish Quarter and synagogues
+
+**🍽️ Local Cuisine:**
+• Traditional goulash with bread dumplings
+• Trdelník (chimney cake) from Old Town Square
+
+## 🗺️ Second Destination: Florence, Italy
+
+**📍 Why Visit:**
+• Florence is the birthplace of the Renaissance and houses the world's greatest collection of Renaissance art
+
+**🏛️ Historical Background:**
+• Florence was the center of medieval European trade and the powerful Medici family patronized artists like Michelangelo and Leonardo da Vinci
+
+**🎭 Cultural Highlights:**
+• Modern Florence maintains its artisan traditions with leather crafting, goldsmithing, and preserves Renaissance urban planning as a living museum
+
+**🌤️ Weather Advice:**
+• September weather is perfect (18-25°C) but popular sites get crowded - book museum tickets in advance and visit early morning
+
+**🎯 Must-Do Activities:**
+• Pre-book Uffizi Gallery to see Botticelli's Birth of Venus
+• Climb the Duomo dome for panoramic city views
+• Explore Oltrarno district for authentic artisan workshops
+
+**🍽️ Local Cuisine:**
+• Bistecca alla Fiorentina (Florentine steak)
+• Ribollita soup and pappardelle pasta
+
+## 💡 Bonus Ideas You May Not Have Considered
+
+### Sunrise Hot Air Balloon Over Tuscany
+• Experience the rolling hills of Tuscany from above with a peaceful hot air balloon ride
+• **Best Time:** Early morning (6-8 AM) for optimal weather and lighting
+• **Why It's Special:** Unique perspective of medieval hilltop towns and vineyards that few tourists experience
+
+### Underground Prague - Medieval Tunnels Tour
+• Explore the hidden underground medieval tunnels and chambers beneath Prague's Old Town
+• **Best Time:** Evening tours available year-round
+• **Why It's Special:** Discover the secret history of medieval Prague that most visitors never see
+
+## 🎭 Fun Fact Corner
+Why don't tourists ever get lost in Prague? Because all roads lead to the castle... and when they don't, there's always a helpful local pointing in six different directions! 😄
+
+## 🎒 Essential Travel Tips
+
+• **Transportation:** Eurail Pass covers most routes between major cities - book seat reservations in advance for high-speed trains
+• **Currency:** Czech Republic uses Czech Crown (CZK), Italy uses Euro (EUR) - many places accept cards but carry some cash for small vendors
+• **Language:** Download Google Translate with offline mode - locals appreciate any attempt to speak their language, even basic phrases
+• **Cultural Etiquette:** In Czech Republic, maintain eye contact when toasting; in Italy, dress modestly when visiting churches and religious sites
+
+---
+
+May your journey be filled with as many discoveries as there are cobblestones in Prague's Old Town, and may each sunset in Florence paint memories as beautiful as a Renaissance masterpiece! Arrivederci and na shledanou! 🏰🎨
+
+*Safe travels and create memories that will last a lifetime!* ✈️🌟
+```
+
+---
+
+## Usage Tips
 ```
 
 **Sample Variables:**
@@ -998,3 +1344,5 @@ cd utils
 ```
 
 This will show you the variables detected and generate the JSON schema needed for Flogo Web UI.
+
+
