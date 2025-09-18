@@ -88,7 +88,7 @@ flogo install github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics
 ```
 
 ## Screenshots
-## Using Flogo to Expose `/metrics` Endpoint for Prometheus
+## Using Flogo to Expose `/metrics` Endpoint for Prometheus e.g. your own Business/Functional metrics easily
 
 Flogo can be used to expose a `/metrics` endpoint that Prometheus can scrape. The Flogo flow can fetch, calculate, or build metrics dynamically and return them in a Prometheus-compatible format.
 
@@ -358,33 +358,11 @@ Field names are automatically sanitized to comply with Prometheus label naming r
 - Only letters, numbers, underscores allowed: `field-name` → `field_name`
 - Spaces replaced with underscores: `field name` → `field_name`
 
-## 🔗 Integration Examples
 
-### With Prometheus Pushgateway
-```go
-// Use the activity output to push to Pushgateway
-prometheusOutput := activityOutput.PrometheusMetric
-http.Post("http://pushgateway:9091/metrics/job/flogo-app", "text/plain", strings.NewReader(prometheusOutput))
-```
 
-### With File Export
-```go
-// Write metrics to file for Prometheus file_sd_config
-os.WriteFile("/var/lib/prometheus/flogo-metrics.prom", []byte(activityOutput.PrometheusMetric), 0644)
-```
+## 🛠️ Building and Deployment (WORK IN PROGRESS)
 
-### With HTTP Endpoint
-```go
-// Serve metrics via HTTP endpoint
-http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
-    w.Header().Set("Content-Type", "text/plain")
-    w.Write([]byte(activityOutput.PrometheusMetric))
-})
-```
-
-## 🛠️ Building and Deployment
-
-### Quick Deployment (Recommended)
+### Quick Deployment 
 ```bash
 # Complete build and deployment guidance
 ./deploy.sh
