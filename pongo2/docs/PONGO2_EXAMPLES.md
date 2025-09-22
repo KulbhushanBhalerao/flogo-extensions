@@ -207,7 +207,6 @@ Account Status: Inactive
 ### Example 4: Task List
 
 **Template:**
-{% raw %}
 ```pongo2
 📋 **Project Tasks for {{ project_name }}**
 
@@ -220,7 +219,6 @@ Account Status: Inactive
 
 Total Tasks: {{ tasks|length }}
 ```
-{% endraw %}
 
 **Sample Variables:**
 ```json
