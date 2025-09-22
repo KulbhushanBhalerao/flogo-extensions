@@ -1,0 +1,26 @@
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+
+# Configure Liquid to be less strict
+liquid:
+  error_mode: warn
+  strict_filters: false
+  strict_variables: false
+
+# Kramdown settings for better code block handling
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+    span:
+      line_numbers: false
+    block:
+      line_numbers: false
+
+# Include documentation files
+include:
+  - pongo2/docs
