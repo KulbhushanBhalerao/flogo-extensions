@@ -41,15 +41,17 @@ Open `utils/schema_generator.html` in your browser.
 ## 📋 Example Usage
 
 ### Input Template:
+{% raw %}
 ```
-You are a {{ "{{" }} role {{ "}}" }} working with {{ "{{" }} domain {{ "}}" }} data.
+You are a {{ role }} working with {{ domain }} data.
 
-**Analysis Objective:** {{ "{{" }} objective {{ "}}" }}
+**Analysis Objective:** {{ objective }}
 
-{{ "{%" }} for item in data_list {{ "%}" }}
-- {{ "{{" }} item.name {{ "}}" }}: {{ "{{" }} item.value {{ "}}" }}
-{{ "{%" }} endfor {{ "%}" }}
+{% for item in data_list %}
+- {{ item.name }}: {{ item.value }}
+{% endfor %}
 ```
+{% endraw %}
 
 ### Output from Simplified Script:
 ```bash
@@ -97,10 +99,12 @@ You are a {{ "{{" }} role {{ "}}" }} working with {{ "{{" }} domain {{ "}}" }} d
 
 ## 🚀 Features
 
-- **Detects simple variables**: `{{ "{{" }} variable_name {{ "}}" }}`
-- **Detects arrays in loops**: `{{ "{%" }} for item in array_name {{ "%}" }}`
-- **Filters loop iterators**: Ignores `{{ "{{" }} item.property {{ "}}" }}` inside loops
-- **Handles complex objects**: `{{ "{{" }} user.profile.name {{ "}}" }}` → base object `user`
+{% raw %}
+- **Detects simple variables**: `{{ variable_name }}`
+- **Detects arrays in loops**: `{% for item in array_name %}`
+- **Filters loop iterators**: Ignores `{{ item.property }}` inside loops
+- **Handles complex objects**: `{{ user.profile.name }}` → base object `user`
+{% endraw %}
 - **JSON Schema compliant**: Works with Flogo Web UI schema system
 
 ## ⚠️ Requirements
