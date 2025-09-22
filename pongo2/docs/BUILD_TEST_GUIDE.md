@@ -10,9 +10,7 @@
 
 ### 1. Clone/Navigate to the Activity Directory
 ```bash
-```bash
 cd /path/to/pongo2
-```
 ```
 
 ### 2. Initialize Go Modules (if not already done)
