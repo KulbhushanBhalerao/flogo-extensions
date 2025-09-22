@@ -9,7 +9,7 @@ A comprehensive collection of custom TIBCO Flogo activities for enterprise integ
 
 ## 🚀 Available Extensions
 
-### 1. [Pongo2 AI Prompt Engine](./pongo2/docs/)
+### 1. [Pongo2 AI Prompt Engine](./pongo2/docs/README)
 **The world's first enterprise workflow platform with native AI prompt engineering capabilities**
 
 - 🤖 **AI-Powered Templates**: Jinja2-like templating with advanced logic
@@ -27,7 +27,7 @@ A comprehensive collection of custom TIBCO Flogo activities for enterprise integ
 
 ---
 
-### 2. [Pongo2 V2 (Enhanced)](./pongo2v2/)
+### 2. Pongo2 V2 (Enhanced)
 **Next-generation AI prompt engine with advanced features**
 
 - ⚡ **Performance Optimized**: Faster template processing
@@ -39,7 +39,7 @@ A comprehensive collection of custom TIBCO Flogo activities for enterprise integ
 
 ---
 
-### 3. [Prime Numbers Generator](./prime-numbers/)
+### 3. Prime Numbers Generator
 **Mathematical utility for generating prime numbers**
 
 - 🔢 **Efficient Algorithms**: Optimized prime number generation
@@ -92,11 +92,14 @@ go build .
 
 # Run tests
 go test -v
+
+# Add folder with extensions in the vscode, settings, extensions, flogo, extensions path
 ```
+
 
 ## 📚 Documentation
 
-- **[Pongo2 Documentation](./pongo2/docs/)** - Comprehensive guide for AI prompt engineering
+- **[Pongo2 Documentation](./pongo2/docs/README)** - Comprehensive guide for AI prompt engineering
 - **[JSON Schema Guide](./pongo2/docs/JSON_SCHEMA_GUIDE.md)** - Generate Flogo Web UI parameters
 - **[Template Examples](./pongo2/docs/PONGO2_EXAMPLES.md)** - Real-world template samples
 - **[Troubleshooting](./pongo2/docs/TROUBLESHOOTING.md)** - Common issues and solutions
