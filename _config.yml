@@ -21,6 +21,14 @@ kramdown:
     block:
       line_numbers: false
 
-# Include documentation files
+# Include documentation files and index
 include:
   - pongo2/docs
+  - index.html
+
+# GitHub Pages settings
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
