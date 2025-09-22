@@ -1,3 +1,8 @@
+---
+layout: default
+---
+
+{% raw %}
 # Pongo2 Template Examples
 
 This document provides practical examples of pongo2 templates with sample variable values and their expected outputs. Use these examples to understand pongo2 syntax and test the activity.
@@ -1346,3 +1351,4 @@ cd utils
 This will show you the variables detected and generate the JSON schema needed for Flogo Web UI.
 
 
+{% endraw %}

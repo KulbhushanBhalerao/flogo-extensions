@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # JSON Schema Generation from Pongo2 Templates
 
 ## 🎯 Quick Start
@@ -37,6 +41,7 @@ Open `utils/schema_generator.html` in your browser.
 ## 📋 Example Usage
 
 ### Input Template:
+{% raw %}
 ```
 You are a {{ role }} working with {{ domain }} data.
 
@@ -46,6 +51,7 @@ You are a {{ role }} working with {{ domain }} data.
 - {{ item.name }}: {{ item.value }}
 {% endfor %}
 ```
+{% endraw %}
 
 ### Output from Simplified Script:
 ```bash
@@ -93,10 +99,12 @@ You are a {{ role }} working with {{ domain }} data.
 
 ## 🚀 Features
 
+{% raw %}
 - **Detects simple variables**: `{{ variable_name }}`
 - **Detects arrays in loops**: `{% for item in array_name %}`
 - **Filters loop iterators**: Ignores `{{ item.property }}` inside loops
 - **Handles complex objects**: `{{ user.profile.name }}` → base object `user`
+{% endraw %}
 - **JSON Schema compliant**: Works with Flogo Web UI schema system
 
 ## ⚠️ Requirements
