@@ -1,4 +1,4 @@
-package jinja2prompt
+package pongo2
 
 import (
 	"github.com/project-flogo/core/data/coerce"

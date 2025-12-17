@@ -1,4 +1,4 @@
-package jinja2prompt
+package pongo2
 
 import (
 	"testing"
@@ -9,15 +9,6 @@ import (
 
 // TestUserProvidedTemplate tests the exact template the user provided
 func TestUserProvidedTemplate(t *testing.T) {
-	// Initialize the activity
-	act := &Activity{}
-	iCtx := test.NewActivityInitContext(nil, nil)
-	_, err := New(iCtx)
-	assert.NoError(t, err)
-
-	// Create test context
-	tc := test.NewActivityContext(act.Metadata())
-
 	// Set up the exact template the user provided
 	template := `You are a {{ role }} working with {{ domain }} data.
 
@@ -34,6 +25,16 @@ func TestUserProvidedTemplate(t *testing.T) {
 {% endfor %}
 
 Please provide your analysis with clear methodology and insights.`
+
+	// Initialize the activity with template in settings
+	iCtx := test.NewActivityInitContext(map[string]interface{}{
+		"template": template,
+	}, nil)
+	act, err := New(iCtx)
+	assert.NoError(t, err)
+
+	// Create test context
+	tc := test.NewActivityContext(act.Metadata())
 
 	// Set up template variables that match the detected schema
 	templateVariables := map[string]interface{}{
@@ -63,7 +64,6 @@ Please provide your analysis with clear methodology and insights.`
 	}
 
 	// Set inputs
-	tc.SetInput("template", template)
 	tc.SetInput("templateVariables", templateVariables)
 
 	// Execute the activity
