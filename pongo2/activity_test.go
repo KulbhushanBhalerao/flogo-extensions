@@ -1,4 +1,4 @@
-package jinja2prompt
+package pongo2
 
 import (
 	"testing"
@@ -49,7 +49,9 @@ func TestJinja2PromptActivity(t *testing.T) {
 func TestJinja2PromptActivityWithVariablesMap(t *testing.T) {
 	// Test using template variables input
 	initCtx := &MockInitContext{
-		settings: map[string]interface{}{},
+		settings: map[string]interface{}{
+			"template": "Task: {{ task }}\nContext: {{ context }}\nPlease {{ instruction }}.",
+		},
 	}
 
 	act, err := New(initCtx)
@@ -59,7 +61,6 @@ func TestJinja2PromptActivityWithVariablesMap(t *testing.T) {
 
 	evalCtx := &MockActivityContext{
 		inputs: map[string]interface{}{
-			"template": "Task: {{ task }}\nContext: {{ context }}\nPlease {{ instruction }}.",
 			"templateVariables": map[string]interface{}{
 				"task":        "Analyze the sentiment",
 				"context":     "customer feedback",
@@ -84,15 +85,6 @@ func TestJinja2PromptActivityWithVariablesMap(t *testing.T) {
 
 func TestJinja2PromptActivityComplexTemplate(t *testing.T) {
 	// Test complex AI prompt template
-	initCtx := &MockInitContext{
-		settings: map[string]interface{}{},
-	}
-
-	act, err := New(initCtx)
-	if err != nil {
-		t.Fatalf("Failed to create activity: %v", err)
-	}
-
 	template := `You are a {{ role }}.
 
 Context:
@@ -106,6 +98,17 @@ Examples:
 {% endif -%}
 
 Please respond with {{ format }}.`
+
+	initCtx := &MockInitContext{
+		settings: map[string]interface{}{
+			"template": template,
+		},
+	}
+
+	act, err := New(initCtx)
+	if err != nil {
+		t.Fatalf("Failed to create activity: %v", err)
+	}
 
 	evalCtx := &MockActivityContext{
 		inputs: map[string]interface{}{
@@ -181,7 +184,9 @@ H{{ forloop.Counter }}: {{ hypothesis }}
 Please provide your analysis with clear methodology, findings, and actionable insights.`
 
 	initCtx := &MockInitContext{
-		settings: map[string]interface{}{},
+		settings: map[string]interface{}{
+			"template": template,
+		},
 	}
 
 	act, err := New(initCtx)
@@ -235,7 +240,6 @@ Please provide your analysis with clear methodology, findings, and actionable in
 
 	evalCtx := &MockActivityContext{
 		inputs: map[string]interface{}{
-			"template": template,
 			"templateVariables": map[string]interface{}{
 				"dataset_type": "customer behavior",
 				"objective":    "Identify factors influencing customer retention",
@@ -391,7 +395,9 @@ func (l *MockLogger) TraceEnabled() bool                          { return false
 func TestTemplateVariablesInput(t *testing.T) {
 	// Test the new templateVariables input approach (simulating Flogo Web UI individual fields)
 	initCtx := &MockInitContext{
-		settings: map[string]interface{}{},
+		settings: map[string]interface{}{
+			"template": "Hello {{ name }}! You are a {{ role }} aged {{ age }}.",
+		},
 	}
 
 	act, err := New(initCtx)
@@ -402,7 +408,6 @@ func TestTemplateVariablesInput(t *testing.T) {
 	// Simulate individual template variable inputs from Flogo Web UI
 	evalCtx := &MockActivityContext{
 		inputs: map[string]interface{}{
-			"template": "Hello {{ name }}! You are a {{ role }} aged {{ age }}.",
 			"templateVariables": map[string]interface{}{
 				"name": "Alice",
 				"role": "developer",
@@ -428,7 +433,9 @@ func TestTemplateVariablesInput(t *testing.T) {
 func TestCombinedInputApproaches(t *testing.T) {
 	// Test templateVariables input with multiple variables
 	initCtx := &MockInitContext{
-		settings: map[string]interface{}{},
+		settings: map[string]interface{}{
+			"template": "Name: {{ name }}, Role: {{ role }}, Extra: {{ extra }}",
+		},
 	}
 
 	act, err := New(initCtx)
@@ -438,7 +445,6 @@ func TestCombinedInputApproaches(t *testing.T) {
 
 	evalCtx := &MockActivityContext{
 		inputs: map[string]interface{}{
-			"template": "Name: {{ name }}, Role: {{ role }}, Extra: {{ extra }}",
 			"templateVariables": map[string]interface{}{
 				"name":  "Alice",
 				"role":  "developer",
