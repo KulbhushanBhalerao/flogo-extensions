@@ -73,18 +73,39 @@ system_metrics{name="memory_usage",environment="prod",service="web-server"} 68.5
 
 ## 📦 Installation
 
-1. Install the activity using the Flogo CLI:
-```bash
-flogo install github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics
-```
+### Option 1: VSCode Flogo Extension (Recommended for Development)
 
-2. Or add it to your `flogo.json` file:
+1. Clone or copy this activity folder to your local system
+2. Open VSCode and go to **Settings** (File > Preferences > Settings)
+3. Search for "Flogo" in the settings
+4. Find the **Flogo: Extensions Path** setting
+5. Add the path to the folder containing the prometheus-metrics activity (the parent folder, not the activity folder itself)
+   ```
+   Example: /Users/yourname/git/flogo-extensions
+   ```
+6. **Restart VSCode** to load the new activity
+7. When you create or open a Flogo flow, the prometheus-metrics activity will appear in the **Recently Installed Activities** section
+
+### Option 2: Direct Import in Application
+
+Add the activity to your Flogo application by including it in the imports section of your application's `.flogo` file:
+
 ```json
 {
   "imports": [
     "github.com/kulbhushanbhalerao/flogo-extensions/prometheus-metrics"
   ]
 }
+```
+
+Then build your application using:
+```bash
+flogobuild build-exe -f your-application.flogo
+```
+
+Or for specific platform:
+```bash
+flogobuild build-exe -f your-application.flogo -p linux/amd64
 ```
 
 ## Screenshots
