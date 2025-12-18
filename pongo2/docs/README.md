@@ -7,7 +7,7 @@ layout: default
 
 **The world's first enterprise workflow platform with native AI prompt engineering capabilities**
 
-Transform how your organization integr## 💼 Business Value & ROI
+## 💼 Business Value & ROI
 
 **Immediate Economic Benefits:**
 - **Development Speed**: 50-60% faster AI integration development
@@ -27,7 +27,9 @@ Transform how your organization integr## 💼 Business Value & ROI
 📊 **Report Generation**: Data-driven report templates with enterprise integration  
 📧 **Email Templates**: Personalized content with complex business rules  
 🔄 **Workflow Automation**: Dynamic AI interactions in automated business processes  
-📋 **Documentation**: Auto-generated content with real-time data injectionAI by designing intelligent, conditional prompts through TIBCO Flogo's familiar drag-and-drop interface. This revolutionary solution combines **Model Context Protocol (MCP)**, **TIBCO Flogo workflows**, and **Pongo2 templating** to deliver Visual Prompt Engineering for enterprise AI adoption.
+📋 **Documentation**: Auto-generated content with real-time data injection  
+
+AI by designing intelligent, conditional prompts through TIBCO Flogo's familiar drag-and-drop interface. This revolutionary solution combines **Model Context Protocol (MCP)**, **TIBCO Flogo workflows**, and **Pongo2 templating** to deliver Visual Prompt Engineering for enterprise AI adoption.
 
 ## 🎯 What Makes This Special
 
@@ -115,12 +117,12 @@ github.com/kulbhushanbhalerao/flogo-extensions/pongo2
    - Example: 
     `"Hello {{ name }}! Please analyze {{ data }} and provide results in {{ format }} format."`
 
-2. **JSON Schema generaration** (object): 
-   - Use script: /utils-pongo2-json/generate_flogo_params.sh and pass the template as a string in doble quotes 
+2. **JSON Schema generation** (object): 
+   - Use script: /utils-pongo2-json/generate_flogo_params.sh and pass the template as a string in double quotes 
    ```bash
    ./generate_flogo_params.sh "Hello {{ name }}! Please analyze {{ data }} and provide results in {{ format }} format."
    ```
-   - Use generated json schema from variables inside the templates. Note: For now use flat json structure in case it generates nestes structure 
+   - Use generated json schema from variables inside the templates. Note: For now use flat json structure in case it generates nested structure 
    - Individual fields are created for each variable detected in your template
    - Each field can be mapped to different data sources in your flow
    - Schema-based approach ensures proper field generation in Flogo Web UI
