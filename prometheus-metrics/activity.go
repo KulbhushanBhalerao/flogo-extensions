@@ -87,9 +87,9 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 
 	// Debug: Check the output before setting
-	fmt.Printf("DEBUG: prometheusMetric before setting: '%s'\n", prometheusMetric)
-	fmt.Printf("DEBUG: prometheusMetric contains newlines: %t\n", strings.Contains(prometheusMetric, "\n"))
-	fmt.Printf("DEBUG: prometheusMetric line count: %d\n", strings.Count(prometheusMetric, "\n")+1)
+	logger.Debugf("DEBUG: prometheusMetric before setting: '%s'", prometheusMetric)
+	logger.Debugf("DEBUG: prometheusMetric contains newlines: %t", strings.Contains(prometheusMetric, "\n"))
+	logger.Debugf("DEBUG: prometheusMetric line count: %d", strings.Count(prometheusMetric, "\n")+1)
 
 	// Generate formatted version (multi-line) from single-line output
 	prometheusMetricFormatted := a.formatForLogging(prometheusMetric)
@@ -159,18 +159,15 @@ func (a *Activity) convertToPrometheusFormat(data map[string]interface{}) (strin
 		}
 	} else {
 		// Handle single metric object (backward compatibility)
-		fmt.Printf("DEBUG: Processing single metric object\n")
 		metricLine, err := a.processMetricObject(data)
 		if err != nil {
 			return "", err
 		}
-		fmt.Printf("DEBUG: Received metric lines from processMetricObject: '%s'\n", metricLine)
 		parts = append(parts, metricLine)
 	}
 
 	// Join all parts with spaces to create a single line
 	finalOutput := strings.Join(parts, " ")
-	fmt.Printf("DEBUG: Final output from convertToPrometheusFormat (single line): '%s'\n", finalOutput)
 
 	return finalOutput, nil
 }
@@ -282,10 +279,6 @@ func (a *Activity) processMetricObject(metricObj map[string]interface{}) (string
 			allLabels += "," + labels
 		}
 
-		// Debug logging
-		fmt.Printf("DEBUG: Processing field '%s' with value '%v'\n", key, val)
-		fmt.Printf("DEBUG: Generated labels: '%s'\n", allLabels)
-
 		if len(allLabels) > 0 {
 			metricLine += "{" + allLabels + "}"
 		}
@@ -308,12 +301,6 @@ func (a *Activity) processMetricObject(metricObj map[string]interface{}) (string
 
 	// Join all metric lines into a single line separated by spaces instead of newlines
 	finalResult := strings.Join(metricLines, " ")
-	fmt.Printf("DEBUG: Final result from processMetricObject (single line): '%s'\n", finalResult)
-	fmt.Printf("DEBUG: Number of metric lines generated: %d\n", len(metricLines))
-	fmt.Printf("DEBUG: Individual metric lines:\n")
-	for i, line := range metricLines {
-		fmt.Printf("DEBUG: Line %d: '%s'\n", i+1, line)
-	}
 
 	// Ensure we return properly formatted string as single line
 	return finalResult, nil
@@ -362,123 +349,12 @@ func (a *Activity) extractLabelsFromObject(metricObj map[string]interface{}) str
 	return strings.Join(labelPairs, ",")
 }
 
-// isNumericField checks if a value is numeric
-func (a *Activity) isNumericField(val interface{}) bool {
-	// Try direct numeric conversion
-	if _, err := coerce.ToFloat64(val); err == nil {
-		return true
-	}
-	if _, err := coerce.ToInt64(val); err == nil {
-		return true
-	}
-
-	// Try string to numeric conversion
-	if strVal, err := coerce.ToString(val); err == nil {
-		if _, err := strconv.ParseFloat(strVal, 64); err == nil {
-			return true
-		}
-		if _, err := strconv.ParseInt(strVal, 10, 64); err == nil {
-			return true
-		}
-	}
-
-	return false
-}
-
 // sanitizeLabelValue escapes special characters in label values
 func (a *Activity) sanitizeLabelValue(value string) string {
 	// Escape quotes and backslashes in label values
 	escapedVal := strings.ReplaceAll(value, "\\", "\\\\")
 	escapedVal = strings.ReplaceAll(escapedVal, "\"", "\\\"")
 	return escapedVal
-}
-
-// extractValue extracts the metric value from the JSON data
-func (a *Activity) extractValue(data map[string]interface{}) (string, error) {
-	// Look for common value fields first
-	valueFields := []string{"value", "val", "metric_value", "count", "gauge", "counter"}
-
-	for _, field := range valueFields {
-		if val, ok := data[field]; ok {
-			if floatVal, err := coerce.ToFloat64(val); err == nil {
-				return strconv.FormatFloat(floatVal, 'f', -1, 64), nil
-			}
-			if intVal, err := coerce.ToInt64(val); err == nil {
-				return strconv.FormatInt(intVal, 10), nil
-			}
-		}
-	}
-
-	// If no standard value field found, look for any numeric field
-	for key, val := range data {
-		// Skip known non-value fields
-		if a.isReservedField(key) {
-			continue
-		}
-
-		if floatVal, err := coerce.ToFloat64(val); err == nil {
-			return strconv.FormatFloat(floatVal, 'f', -1, 64), nil
-		}
-		if intVal, err := coerce.ToInt64(val); err == nil {
-			return strconv.FormatInt(intVal, 10), nil
-		}
-	}
-
-	// If still no numeric value found, try to be more lenient with string conversion
-	for key, val := range data {
-		if a.isReservedField(key) {
-			continue
-		}
-
-		// Try to convert string values to numbers
-		if strVal, err := coerce.ToString(val); err == nil {
-			if floatVal, err := strconv.ParseFloat(strVal, 64); err == nil {
-				return strconv.FormatFloat(floatVal, 'f', -1, 64), nil
-			}
-			if intVal, err := strconv.ParseInt(strVal, 10, 64); err == nil {
-				return strconv.FormatInt(intVal, 10), nil
-			}
-		}
-	}
-
-	// Create a list of available keys for debugging
-	var keys []string
-	for k := range data {
-		keys = append(keys, k)
-	}
-
-	return "", fmt.Errorf("no numeric value found in metric data. Available fields: %v", keys)
-}
-
-// extractLabels extracts and formats labels from the JSON data
-func (a *Activity) extractLabels(data map[string]interface{}) string {
-	var labelPairs []string
-
-	// Get all keys and sort them for consistent output
-	keys := make([]string, 0, len(data))
-	for k := range data {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
-	for _, key := range keys {
-		val := data[key]
-
-		// Skip reserved fields (including value fields that are used for the metric value)
-		if a.isReservedField(key) {
-			continue
-		}
-
-		// Convert value to string and add as label (include all non-reserved fields as labels)
-		if strVal, err := coerce.ToString(val); err == nil {
-			// Escape quotes and backslashes in label values
-			escapedVal := strings.ReplaceAll(strVal, "\\", "\\\\")
-			escapedVal = strings.ReplaceAll(escapedVal, "\"", "\\\"")
-			labelPairs = append(labelPairs, fmt.Sprintf("%s=\"%s\"", a.sanitizeLabelName(key), escapedVal))
-		}
-	}
-
-	return strings.Join(labelPairs, ",")
 }
 
 // isReservedField checks if a field is reserved and should not be used as a label
